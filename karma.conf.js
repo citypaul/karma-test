@@ -2,6 +2,10 @@
 // Generated on Mon Jan 04 2016 23:07:01 GMT+0000 (GMT)
 
 module.exports = function (config) {
+
+    var path = require('path'),
+        root = require('app-root-path').path;
+
     config.set({
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -9,6 +13,8 @@ module.exports = function (config) {
         frameworks: ['mocha'],
         files: [
             //'dist/*.js',
+            path.resolve(root, 'node_modules/phantomjs-polyfill/bind-polyfill.js'),
+            path.resolve(root, 'node_modules/react/dist/react-with-addons.js'),
             'test/view/**/*.js',
             'test/view/*_test.js',
             'test/view/**/*_test.js'
@@ -39,7 +45,7 @@ module.exports = function (config) {
 
         browsers: ['PhantomJS'],
 
-        singleRun: false,
+        singleRun: true,
 
         concurrency: Infinity,
 
@@ -49,7 +55,11 @@ module.exports = function (config) {
             'test/view/**/*_test.js': ['webpack']
         },
 
-        webpack: {},
+        webpack: {
+            externals: {
+                react: 'React'
+            }
+        },
 
         webpackMiddleware: {
             noInfo: true
